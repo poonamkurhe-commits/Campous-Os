@@ -1,10 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from beanie import Document, PydanticObjectId
 from pydantic import Field
 
-from app.core.deps import utcnow
+
+def utcnow() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class Student(Document):
@@ -12,6 +14,7 @@ class Student(Document):
     user_id: PydanticObjectId
     roll_no: str
     department: str
+    course: Optional[str] = None
     year: int
     semester: int = 1
     emergency_contact: Optional[str] = None

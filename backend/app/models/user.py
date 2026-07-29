@@ -1,14 +1,20 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from beanie import Document, Link, PydanticObjectId
 from pydantic import BaseModel, EmailStr, Field
 
-from app.core.deps import utcnow
+
+def utcnow() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class UserProfile(BaseModel):
     phone: Optional[str] = None
+    designation: Optional[str] = None
+    status: Optional[str] = None
+    hostel: Optional[str] = None
+    student_ids: list[str] = Field(default_factory=list)
     avatar_url: Optional[str] = None
     bio: Optional[str] = None
     emergency_contact: Optional[str] = None

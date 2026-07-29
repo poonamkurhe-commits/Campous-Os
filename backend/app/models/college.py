@@ -1,11 +1,14 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from beanie import Document
 from pydantic import EmailStr, Field
 
 from app.core.constants import CollegePlan, CollegeStatus
-from app.core.deps import utcnow
+
+
+def utcnow() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class College(Document):
