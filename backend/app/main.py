@@ -8,7 +8,7 @@ from slowapi.util import get_remote_address
 
 from app.core.config import get_settings
 from app.db.mongo import close_db, init_db
-from app.routers import auth, colleges, notifications, users
+from app.routers import auth, colleges, notifications, users, attendance, assignments, results, timetable
 
 settings = get_settings()
 limiter = Limiter(key_func=get_remote_address)
@@ -44,6 +44,10 @@ app.include_router(auth.router, prefix="/api/v1")
 app.include_router(colleges.router, prefix="/api/v1")
 app.include_router(users.router, prefix="/api/v1")
 app.include_router(notifications.router, prefix="/api/v1")
+app.include_router(attendance.router, prefix="/api/v1")
+app.include_router(assignments.router, prefix="/api/v1")
+app.include_router(results.router, prefix="/api/v1")
+app.include_router(timetable.router, prefix="/api/v1")
 
 
 @app.get("/health")

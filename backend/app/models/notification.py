@@ -1,10 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Literal, Optional
 
 from beanie import Document, PydanticObjectId
 from pydantic import BaseModel, Field
 
-from app.core.deps import utcnow
+
+def utcnow() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class NotificationTarget(BaseModel):

@@ -46,6 +46,10 @@ export class ApiClient {
   patch<T>(path: string, body: unknown) {
     return this.request<T>(path, { method: "PATCH", body: JSON.stringify(body) });
   }
+
+  delete<T>(path: string) {
+    return this.request<T>(path, { method: "DELETE" });
+  }
 }
 
 export const api = new ApiClient();
@@ -70,6 +74,139 @@ export interface AuthResponse {
     plan: string;
     status: string;
   } | null;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  college_id: string | null;
+  profile: Record<string, unknown>;
+  is_verified: boolean;
+}
+
+export interface Student {
+  id: string;
+  user_id: string;
+  name: string;
+  email: string;
+  role: string;
+  roll_no: string;
+  department: string;
+  course?: string;
+  year: number;
+  semester: number;
+  avatar_url?: string;
+  emergency_contact?: string;
+  blood_group?: string;
+  created_at?: string;
+}
+
+export interface StudentAttendanceRecord {
+  student_id: string;
+  status: string;
+  marked_by?: string | null;
+}
+
+export interface Attendance {
+  id: string;
+  faculty_id: string;
+  subject: string;
+  date: string;
+  session_name?: string | null;
+  records: StudentAttendanceRecord[];
+  created_at: string;
+}
+
+export interface Assignment {
+  id: string;
+  created_by: string;
+  title: string;
+  description?: string;
+  subject?: string;
+  due_date?: string | null;
+  attachments: string[];
+  published: boolean;
+  created_at: string;
+}
+
+export interface Submission {
+  id: string;
+  assignment_id: string;
+  student_id: string;
+  files: string[];
+  submitted_at: string;
+  marks_awarded?: number | null;
+}
+
+export interface Result {
+  id: string;
+  student_id: string;
+  subject: string;
+  exam_name?: string;
+  internal_marks?: number;
+  practical_marks?: number;
+  total_marks?: number;
+  grade?: string;
+}
+
+export interface TimetableEntry {
+  id: string;
+  faculty_id: string;
+  subject: string;
+  classroom?: string | null;
+  day_of_week: number;
+  start_time: string;
+  end_time: string;
+}
+
+export interface Faculty {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  department: string;
+  course?: string;
+  designation?: string;
+  status?: string;
+  subjects: string[];
+  created_at?: string;
+}
+
+export interface UserPayload {
+  name: string;
+  email: string;
+  password: string;
+  role: "student" | "faculty" | "parent" | "warden";
+  department?: string;
+  course?: string;
+  designation?: string;
+  status?: string;
+  hostel?: string;
+  phone?: string;
+  student_ids?: string[];
+  subjects?: string[];
+  roll_no?: string;
+  year?: number;
+  semester?: number;
+}
+
+export interface UpdateUserPayload {
+  name?: string;
+  email?: string;
+  password?: string;
+  department?: string;
+  course?: string;
+  designation?: string;
+  status?: string;
+  hostel?: string;
+  phone?: string;
+  student_ids?: string[];
+  subjects?: string[];
+  roll_no?: string;
+  year?: number;
+  semester?: number;
 }
 
 export interface College {
