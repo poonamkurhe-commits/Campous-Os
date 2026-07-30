@@ -48,9 +48,16 @@ const NAV_ITEMS: Record<string, { href: string; label: string; icon: React.Eleme
   ],
   student: [
     { href: "/student/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/student/assignments", label: "Assignments", icon: BookOpen },
+    { href: "/student/results", label: "Results", icon: BookOpen },
+    { href: "/student/timetable", label: "Timetable", icon: CalendarDays },
+    { href: "/student/subjects", label: "Subjects", icon: BookOpen },
     { href: "/student/attendance", label: "Attendance", icon: Users },
+    { href: "/student/notifications", label: "Notifications", icon: Bell },
+    { href: "/student/profile", label: "Profile", icon: Users },
+    { href: "/student/settings", label: "Settings", icon: Users },
     { href: "/student/ai-assistant", label: "AI Assistant", icon: BookOpen },
-    { href: "/student/bus", label: "Bus", icon: Bus },
+    { href: "/student/bus", label: "Bus Tracking", icon: Bus },
   ],
   parent: [
     { href: "/parent/dashboard", label: "Dashboard", icon: LayoutDashboard },
