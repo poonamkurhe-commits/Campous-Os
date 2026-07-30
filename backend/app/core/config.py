@@ -29,6 +29,7 @@ class Settings(BaseSettings):
 
     GEMINI_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
+    GROQ_API_KEY: str = ""
 
     AI_RATE_LIMIT_PER_MINUTE: int = 10
 

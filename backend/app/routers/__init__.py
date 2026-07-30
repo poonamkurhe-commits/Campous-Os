@@ -1,4 +1,4 @@
-from . import auth, colleges, notifications, users, attendance, assignments, results, timetable
+from . import auth, colleges, notifications, users, attendance, assignments, results, timetable, hostel, ai, bus
 
 __all__ = [
     "auth",
@@ -9,4 +9,7 @@ __all__ = [
     "assignments",
     "results",
     "timetable",
+    "hostel",
+    "ai",
+    "bus",
 ]

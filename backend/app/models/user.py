@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from typing import Optional
 
+# pyrefly: ignore [missing-import]
 from beanie import Document, Link, PydanticObjectId
 from pydantic import BaseModel, EmailStr, Field
 

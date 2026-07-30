@@ -12,8 +12,11 @@ import {
   Home,
   LayoutDashboard,
   LogOut,
+  MapPin,
   Menu,
   Moon,
+  Route,
+  Sparkles,
   Sun,
   Users,
   X,
@@ -23,11 +26,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn, getRoleDashboardPath } from "@/lib/utils";
 import { useAuthStore } from "@/lib/store/auth";
+import { NotificationBadge } from "@/components/shared/NotificationBadge";
+import { AiAssistant } from "@/components/shared/AiAssistant";
 
 const NAV_ITEMS: Record<string, { href: string; label: string; icon: React.ElementType }[]> = {
   super_admin: [
     { href: "/super-admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/super-admin/colleges", label: "Colleges", icon: GraduationCap },
+    { href: "/super-admin/analytics", label: "Analytics", icon: LayoutDashboard },
+    { href: "/super-admin/ai-assistant", label: "AI Assistant", icon: Sparkles },
+    { href: "/super-admin/notifications", label: "Notifications", icon: Bell },
+    { href: "/super-admin/profile", label: "Profile", icon: Users },
+    { href: "/super-admin/settings", label: "Settings", icon: Users },
   ],
   college_admin: [
     { href: "/college-admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -35,6 +45,19 @@ const NAV_ITEMS: Record<string, { href: string; label: string; icon: React.Eleme
     { href: "/college-admin/faculty", label: "Faculty", icon: BookOpen },
     { href: "/college-admin/parents", label: "Parents", icon: Users },
     { href: "/college-admin/wardens", label: "Wardens", icon: Home },
+    { href: "/college-admin/hostel/dashboard", label: "Hostel Overview", icon: Home },
+    { href: "/college-admin/hostel/buildings", label: "Hostel Buildings", icon: GraduationCap },
+    { href: "/college-admin/hostel/rooms", label: "Hostel Rooms", icon: Home },
+    { href: "/college-admin/hostel/allocations", label: "Room Allocations", icon: Users },
+    { href: "/college-admin/hostel/requests", label: "Hostel Requests", icon: Bell },
+    { href: "/college-admin/ai-assistant", label: "AI Assistant", icon: Sparkles },
+    { href: "/college-admin/notifications", label: "Notifications", icon: Bell },
+    { href: "/college-admin/profile", label: "Profile", icon: Users },
+    { href: "/college-admin/settings", label: "Settings", icon: Users },
+    { href: "/transport/dashboard", label: "Transport", icon: Bus },
+    { href: "/transport/buses", label: "Fleet", icon: MapPin },
+    { href: "/transport/routes", label: "Routes", icon: Route },
+    { href: "/transport/assignments", label: "Assignments", icon: Users },
   ],
   faculty: [
     { href: "/faculty/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -43,29 +66,49 @@ const NAV_ITEMS: Record<string, { href: string; label: string; icon: React.Eleme
     { href: "/faculty/assignments", label: "Assignments", icon: BookOpen },
     { href: "/faculty/results", label: "Results", icon: BookOpen },
     { href: "/faculty/timetable", label: "Timetable", icon: CalendarDays },
+    { href: "/faculty/ai-assistant", label: "AI Assistant", icon: Sparkles },
     { href: "/faculty/notifications", label: "Notifications", icon: Bell },
     { href: "/faculty/notes", label: "Notes", icon: BookOpen },
   ],
   student: [
     { href: "/student/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/student/hostel", label: "Hostel & Room", icon: Home },
     { href: "/student/assignments", label: "Assignments", icon: BookOpen },
     { href: "/student/results", label: "Results", icon: BookOpen },
     { href: "/student/timetable", label: "Timetable", icon: CalendarDays },
     { href: "/student/subjects", label: "Subjects", icon: BookOpen },
     { href: "/student/attendance", label: "Attendance", icon: Users },
+    { href: "/student/ai-assistant", label: "AI Assistant", icon: Sparkles },
     { href: "/student/notifications", label: "Notifications", icon: Bell },
     { href: "/student/profile", label: "Profile", icon: Users },
     { href: "/student/settings", label: "Settings", icon: Users },
-    { href: "/student/ai-assistant", label: "AI Assistant", icon: BookOpen },
     { href: "/student/bus", label: "Bus Tracking", icon: Bus },
   ],
   parent: [
     { href: "/parent/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/parent/children", label: "My Children", icon: Users },
+    { href: "/parent/attendance", label: "Attendance", icon: Users },
+    { href: "/parent/results", label: "Results", icon: BookOpen },
+    { href: "/parent/timetable", label: "Timetable", icon: CalendarDays },
+    { href: "/parent/ai-assistant", label: "AI Assistant", icon: Sparkles },
+    { href: "/parent/notifications", label: "Notifications", icon: Bell },
+    { href: "/parent/profile", label: "Profile", icon: Users },
+    { href: "/parent/settings", label: "Settings", icon: Users },
     { href: "/parent/bus", label: "Bus Tracking", icon: Bus },
   ],
   warden: [
     { href: "/warden/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/warden/students", label: "Students", icon: Users },
+    { href: "/college-admin/hostel/buildings", label: "Buildings", icon: Home },
+    { href: "/college-admin/hostel/rooms", label: "Rooms", icon: Home },
+    { href: "/college-admin/hostel/allocations", label: "Allocations", icon: Users },
+    { href: "/college-admin/hostel/requests", label: "Requests", icon: Bell },
     { href: "/warden/outpasses", label: "Outpasses", icon: Home },
+    { href: "/warden/attendance", label: "Attendance", icon: Users },
+    { href: "/warden/ai-assistant", label: "AI Assistant", icon: Sparkles },
+    { href: "/warden/notifications", label: "Notifications", icon: Bell },
+    { href: "/warden/profile", label: "Profile", icon: Users },
+    { href: "/warden/settings", label: "Settings", icon: Users },
   ],
 };
 
@@ -91,6 +134,9 @@ export function DashboardShell({
           <Menu className="h-5 w-5" />
         </Button>
         <span className="font-semibold">{college?.name || "CampusOS"}</span>
+        <div className="ml-auto">
+          <NotificationBadge />
+        </div>
       </header>
 
       {/* Mobile sidebar overlay */}
@@ -146,13 +192,14 @@ export function DashboardShell({
         <main className="flex-1 p-4 md:p-8">
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-            <Button variant="outline" size="icon" className="hidden lg:flex">
-              <Bell className="h-4 w-4" />
-            </Button>
+            <div className="hidden lg:flex">
+              <NotificationBadge />
+            </div>
           </div>
           {children}
         </main>
       </div>
+      <AiAssistant />
     </div>
   );
 }
